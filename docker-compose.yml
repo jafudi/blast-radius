@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+
+  blastradius:
+    build: .
+    cap_add:
+      - SYS_ADMIN
+    security_opt:
+      - apparmor:unconfined
+    ports:
+      - "5000:5000"
+    volumes:
+      - "../traction:/data:ro"
