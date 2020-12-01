@@ -5,7 +5,8 @@ import os
 import re
 
 # 3rd party libraries
-import hcl    # hashicorp configuration language (.tf)
+import hcl
+import hcl2    # hashicorp configuration language (.tf)
 
 class Terraform:
     """Finds terraform/hcl files (*.tf) in CWD or a supplied directory, parses
@@ -23,7 +24,10 @@ class Terraform:
             with open(fname, 'r', encoding='utf-8') as f:
                 self.config_str += f.read() + ' '
         config_io = io.StringIO(self.config_str)
-        self.config = hcl.load(config_io)
+        try:
+            self.config = hcl.load(config_io)
+        except:
+            self.config = hcl2.load(config_io)
 
         # then any submodules it may contain, skipping any remote modules for
         # the time being.
